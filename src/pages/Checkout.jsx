@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CreditCard, ShoppingBag, ShieldCheck, CheckCircle, AlertCircle } from 'lucide-react';
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
-import api from '../utils/api';
+import api, { getImageUrl } from '../utils/api';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -96,7 +96,7 @@ const Checkout = () => {
       price: item.product.salePrice > 0 ? item.product.salePrice : item.product.price,
       size: item.size,
       color: item.color,
-      image: item.product.images?.[0]
+      image: getImageUrl(item.product.images?.[0])
     }));
 
     const orderPayload = {
@@ -429,7 +429,7 @@ const Checkout = () => {
                 const p = item.product.salePrice > 0 ? item.product.salePrice : item.product.price;
                 return (
                   <div key={item._id} className="flex gap-3 text-xs items-center">
-                    <img src={item.product.images?.[0]} alt={item.name} className="w-10 h-12 rounded object-cover" />
+                    <img src={getImageUrl(item.product.images?.[0])} alt={item.name} className="w-10 h-12 rounded object-cover" />
                     <div className="flex-grow min-w-0">
                       <p className="font-bold text-charcoal truncate">{item.product.name}</p>
                       <p className="text-[10px] text-gray-400">Qty: {item.quantity} | Size: {item.size}</p>

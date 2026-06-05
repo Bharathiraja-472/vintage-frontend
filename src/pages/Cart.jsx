@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, Trash2, ArrowRight, Sparkles, X } from 'lucide-react';
 import { CartContext } from '../context/CartContext';
+import { getImageUrl } from '../utils/api';
 
 const Cart = () => {
   const {
@@ -98,7 +99,7 @@ const Cart = () => {
               >
                 {/* Image */}
                 <Link to={`/product/${item.product._id}`} className="w-20 sm:w-24 aspect-[3/4] rounded overflow-hidden bg-beige-light flex-shrink-0">
-                  <img src={item.product.images?.[0]} alt={item.name} className="w-full h-full object-cover" />
+                  <img src={getImageUrl(item.product.images?.[0])} alt={item.name} className="w-full h-full object-cover" />
                 </Link>
 
                 {/* Details */}

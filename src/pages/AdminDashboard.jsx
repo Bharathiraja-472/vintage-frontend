@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { LayoutDashboard, ShoppingBag, Truck, Users, Plus, Edit2, Trash2, ShieldAlert, Sparkles, Check, X, Search, Info } from 'lucide-react';
 import { ProductContext } from '../context/ProductContext';
-import api from '../utils/api';
+import api, { getImageUrl } from '../utils/api';
 
 const AdminDashboard = () => {
   const { categories } = useContext(ProductContext);
@@ -419,7 +419,7 @@ const AdminDashboard = () => {
                       {lowStockList.map((p) => (
                         <div key={p._id} className="flex items-center justify-between border-b pb-2">
                           <div className="flex gap-2.5 items-center">
-                            <img src={p.images?.[0]} alt={p.name} className="w-8 h-10 object-cover rounded border" />
+                            <img src={getImageUrl(p.images?.[0])} alt={p.name} className="w-8 h-10 object-cover rounded border" />
                             <div>
                               <p className="font-bold text-charcoal truncate max-w-[200px]">{p.name}</p>
                               <p className="text-[10px] text-gray-400">SKU: {p.sku}</p>
@@ -714,7 +714,7 @@ const AdminDashboard = () => {
                   {filteredProductsList.map((prod) => (
                     <tr key={prod._id} className="hover:bg-beige-light/10">
                       <td className="p-3">
-                        <img src={prod.images?.[0]} alt={prod.name} className="w-8 h-10 object-cover rounded border" />
+                        <img src={getImageUrl(prod.images?.[0])} alt={prod.name} className="w-8 h-10 object-cover rounded border" />
                       </td>
                       <td className="p-3 font-semibold text-charcoal">{prod.sku}</td>
                       <td className="p-3 truncate max-w-[200px]">{prod.name}</td>

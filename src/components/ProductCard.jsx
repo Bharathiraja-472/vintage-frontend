@@ -4,6 +4,7 @@ import { Heart, ShoppingCart, Star } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { CartContext } from '../context/CartContext';
 import { WishlistContext } from '../context/WishlistContext';
+import { getImageUrl } from '../utils/api';
 
 const ProductCard = ({ product }) => {
   const { user } = useContext(AuthContext);
@@ -81,7 +82,7 @@ const ProductCard = ({ product }) => {
       {/* Product Image */}
       <Link to={`/product/${product._id}`} className="aspect-[3/4] block overflow-hidden bg-beige-light">
         <img
-          src={product.images?.[0]}
+          src={getImageUrl(product.images?.[0])}
           alt={product.name}
           className="w-full h-full object-cover hover-zoom-img"
           loading="lazy"

@@ -1,5 +1,19 @@
 import axios from "axios";
 
+// Backend server base (without /api suffix) — used for resolving upload image URLs
+const BACKEND_URL = (import.meta.env.VITE_API_URL || '').replace('/api', '');
+
+/**
+ * Converts a stored image path to a fully qualified URL.
+ * - Relative paths like /uploads/image.jpg  → https://vintage-backend-aoum.onrender.com/uploads/image.jpg
+ * - Absolute URLs (Cloudinary, http://)     → returned unchanged
+ */
+export const getImageUrl = (path) => {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  return `${BACKEND_URL}${path}`;
+};
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true

@@ -6,6 +6,7 @@ import { CartContext } from '../context/CartContext';
 import { WishlistContext } from '../context/WishlistContext';
 import { AuthContext } from '../context/AuthContext';
 import ProductCard from '../components/ProductCard';
+import { getImageUrl } from '../utils/api';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -34,7 +35,7 @@ const ProductDetails = () => {
     const loadDetails = async () => {
       try {
         const prod = await fetchProductById(id);
-        setActiveImage(prod.images?.[0] || '');
+        setActiveImage(getImageUrl(prod.images?.[0]) || '');
         setSelectedSize(prod.sizes?.[0] || '');
         setSelectedColor(prod.colors?.[0] || '');
         setQuantity(1);
@@ -150,12 +151,12 @@ const ProductDetails = () => {
             {product.images?.map((img, index) => (
               <button
                 key={index}
-                onClick={() => setActiveImage(img)}
+                onClick={() => setActiveImage(getImageUrl(img))}
                 className={`aspect-[3/4] rounded border overflow-hidden bg-beige-light transition-all ${
-                  activeImage === img ? 'border-gold ring-1 ring-gold shadow-md' : 'border-gray-200 opacity-70 hover:opacity-100'
+                  activeImage === getImageUrl(img) ? 'border-gold ring-1 ring-gold shadow-md' : 'border-gray-200 opacity-70 hover:opacity-100'
                 }`}
               >
-                <img src={img} alt={`${product.name} look ${index + 1}`} className="w-full h-full object-cover" />
+                <img src={getImageUrl(img)} alt={`${product.name} look ${index + 1}`} className="w-full h-full object-cover" />
               </button>
             ))}
           </div>

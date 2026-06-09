@@ -98,39 +98,7 @@ const AdminDashboard = () => {
   // ----------------------------------------------------
   // PRODUCT LOGIC
   // ----------------------------------------------------
-  const [uploadingImage, setUploadingImage] = useState(false);
   const [imageUrlInput, setImageUrlInput] = useState('');
-
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append('image', file);
-
-    setUploadingImage(true);
-    setSuccessMsg('');
-    setErrorMsg('');
-
-    try {
-      const { data } = await api.post('/products/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      setNewProduct(prev => ({
-        ...prev,
-        images: [...prev.images, data.url]
-      }));
-      setSuccessMsg('Image uploaded successfully!');
-    } catch (err) {
-      console.error(err);
-      setErrorMsg(err.response?.data?.message || 'Failed to upload image');
-    } finally {
-      setUploadingImage(false);
-      e.target.value = null;
-    }
-  };
 
   const handleAddImageUrl = () => {
     if (!imageUrlInput.trim()) return;
@@ -609,45 +577,28 @@ const AdminDashboard = () => {
                 />
               </div>
 
-              {/* Upload & Images Manager */}
+              {/* Images Manager (URL Only) */}
               <div className="space-y-3 pt-2 border-t">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-charcoal">Product Images *</label>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  
-                  {/* File Upload Input */}
-                  <div className="p-4 border border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center space-y-2 bg-beige-light/10">
-                    <span className="text-[10px] text-gray-500 font-semibold uppercase">Option A: Upload Image File</span>
+                <div className="p-4 border border-dashed border-gray-300 rounded-lg flex flex-col justify-center space-y-2 bg-beige-light/10">
+                  <span className="text-[10px] text-gray-500 font-semibold uppercase">Add Image URL</span>
+                  <div className="flex gap-2">
                     <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-charcoal file:text-white hover:file:bg-gold hover:file:text-charcoal cursor-pointer w-full"
+                      type="url"
+                      placeholder="https://example.com/image.jpg"
+                      value={imageUrlInput}
+                      onChange={(e) => setImageUrlInput(e.target.value)}
+                      className="flex-grow p-2 border rounded focus:outline-none text-xs bg-white"
                     />
-                    {uploadingImage && <span className="text-[10px] text-gold-premium animate-pulse font-semibold">Uploading image file...</span>}
+                    <button
+                      type="button"
+                      onClick={handleAddImageUrl}
+                      className="bg-charcoal text-white hover:bg-gold hover:text-charcoal px-4 py-2 font-bold uppercase rounded text-[10px] tracking-wider transition-colors"
+                    >
+                      Add URL
+                    </button>
                   </div>
-
-                  {/* URL Textbox Input */}
-                  <div className="p-4 border border-dashed border-gray-300 rounded-lg flex flex-col justify-center space-y-2 bg-beige-light/10">
-                    <span className="text-[10px] text-gray-500 font-semibold uppercase">Option B: Add Image URL</span>
-                    <div className="flex gap-2">
-                      <input
-                        type="url"
-                        placeholder="https://example.com/image.jpg"
-                        value={imageUrlInput}
-                        onChange={(e) => setImageUrlInput(e.target.value)}
-                        className="flex-grow p-2 border rounded focus:outline-none text-xs"
-                      />
-                      <button
-                        type="button"
-                        onClick={handleAddImageUrl}
-                        className="bg-charcoal text-white hover:bg-gold hover:text-charcoal px-4 py-2 font-bold uppercase rounded text-[10px] tracking-wider transition-colors"
-                      >
-                        Add URL
-                      </button>
-                    </div>
-                  </div>
-
                 </div>
 
                 {/* Uploaded Images Thumbnails */}
@@ -671,7 +622,7 @@ const AdminDashboard = () => {
                     </div>
                   </div>
                 ) : (
-                  <p className="text-[11px] text-red-500 italic">No images selected yet. Please upload at least 1 image file or add a valid image URL.</p>
+                  <p className="text-[11px] text-red-500 italic">No images selected yet. Please add a valid image URL.</p>
                 )}
               </div>
 

@@ -127,7 +127,19 @@ const AdminDashboard = () => {
       return;
     }
 
-    if (newProduct.images.length === 0) {
+    // Auto-append URL in textbox if user forgot to click "Add URL"
+    let currentImages = [...newProduct.images];
+    if (imageUrlInput.trim()) {
+      const trimmedUrl = imageUrlInput.trim();
+      currentImages.push(trimmedUrl);
+      setNewProduct(prev => ({
+        ...prev,
+        images: [...prev.images, trimmedUrl]
+      }));
+      setImageUrlInput('');
+    }
+
+    if (currentImages.length === 0) {
       setErrorMsg('Product must have at least 1 image.');
       return;
     }
@@ -166,7 +178,7 @@ const AdminDashboard = () => {
       stock: Number(newProduct.stock),
       sizes,
       colors,
-      images: newProduct.images,
+      images: currentImages,
       specialCollection: 'None'
     };
 
@@ -585,7 +597,7 @@ const AdminDashboard = () => {
                   <span className="text-[10px] text-gray-500 font-semibold uppercase">Add Image URL</span>
                   <div className="flex gap-2">
                     <input
-                      type="url"
+                      type="text"
                       placeholder="https://example.com/image.jpg"
                       value={imageUrlInput}
                       onChange={(e) => setImageUrlInput(e.target.value)}

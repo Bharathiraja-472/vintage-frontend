@@ -11,7 +11,9 @@ const BACKEND_URL = (import.meta.env.VITE_API_URL || '').replace('/api', '');
 export const getImageUrl = (path) => {
   if (!path) return '';
   if (path.startsWith('http://') || path.startsWith('https://')) return path;
-  return `${BACKEND_URL}${path}`;
+  const baseUrl = BACKEND_URL.endsWith('/') ? BACKEND_URL.slice(0, -1) : BACKEND_URL;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${baseUrl}${cleanPath}`;
 };
 
 const api = axios.create({

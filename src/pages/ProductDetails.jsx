@@ -37,7 +37,7 @@ const ProductDetails = () => {
         const prod = await fetchProductById(id);
         setActiveImage(getImageUrl(prod.images?.[0]) || '');
         setSelectedSize(prod.sizes?.[0] || '');
-        setSelectedColor(prod.colors?.[0] || '');
+        setSelectedColor(prod.colors?.[0] || 'White');
         setQuantity(1);
 
         // Fetch related products in the same category
@@ -217,49 +217,24 @@ const ProductDetails = () => {
             <p className="text-xs text-gray-600 leading-relaxed font-sans">{product.description}</p>
           </div>
 
-          {/* Attributes Selectors (Size & Color) */}
-          <div className="grid grid-cols-2 gap-4">
-            
-            {/* Size Selector */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-wider text-charcoal block">Select Size</label>
-              <div className="flex flex-wrap gap-1.5">
-                {product.sizes?.map((sz) => (
-                  <button
-                    key={sz}
-                    onClick={() => setSelectedSize(sz)}
-                    className={`text-xs px-3 py-1.5 border transition-all ${
-                      selectedSize === sz
-                        ? 'bg-charcoal text-white border-charcoal font-bold'
-                        : 'border-gray-200 hover:border-gold text-gray-600 bg-white'
-                    }`}
-                  >
-                    {sz}
-                  </button>
-                ))}
-              </div>
+          {/* Attributes Selectors (Size Only) */}
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold uppercase tracking-wider text-charcoal block">Select Size</label>
+            <div className="flex flex-wrap gap-1.5">
+              {product.sizes?.map((sz) => (
+                <button
+                  key={sz}
+                  onClick={() => setSelectedSize(sz)}
+                  className={`text-xs px-3 py-1.5 border transition-all ${
+                    selectedSize === sz
+                      ? 'bg-charcoal text-white border-charcoal font-bold'
+                      : 'border-gray-200 hover:border-gold text-gray-600 bg-white'
+                  }`}
+                >
+                  {sz}
+                </button>
+              ))}
             </div>
-
-            {/* Color Selector */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-wider text-charcoal block">Select Color</label>
-              <div className="flex flex-wrap gap-1.5">
-                {product.colors?.map((col) => (
-                  <button
-                    key={col}
-                    onClick={() => setSelectedColor(col)}
-                    className={`text-xs px-3 py-1.5 border transition-all rounded ${
-                      selectedColor === col
-                        ? 'bg-gold text-charcoal border-gold font-bold'
-                        : 'border-gray-200 hover:border-gold text-gray-600 bg-white'
-                    }`}
-                  >
-                    {col}
-                  </button>
-                ))}
-              </div>
-            </div>
-
           </div>
 
           {/* Quantity Selector */}

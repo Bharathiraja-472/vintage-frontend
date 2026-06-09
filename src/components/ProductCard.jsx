@@ -105,14 +105,6 @@ const ProductCard = ({ product }) => {
             </h4>
           </Link>
 
-          {/* Reviews Star Rating */}
-          <div className="flex items-center space-x-1.5 mt-1">
-            <div className="flex text-amber-500">
-              <Star size={12} fill="currentColor" />
-            </div>
-            <span className="text-xs text-charcoal-light font-medium">{product.ratings}</span>
-            <span className="text-[10px] text-gray-400">({product.numReviews})</span>
-          </div>
         </div>
 
         {/* Pricing & Add To Cart Button */}

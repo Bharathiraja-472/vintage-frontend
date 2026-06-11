@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 // Import Contexts
 import { AuthProvider } from './context/AuthContext';
@@ -39,6 +39,100 @@ import Profile from './pages/Profile';
 // Import Admin Protected Pages
 import AdminDashboard from './pages/AdminDashboard';
 
+function AppContent() {
+  const location = useLocation();
+  
+  // Hide Navbar and Footer on auth/sign-in/sign-up/forgot-password/admin-login pages
+  const normalizedPath = location.pathname.replace(/\/$/, '');
+  const hideNavbarAndFooter = ['/login', '/register', '/forgot-password', '/admin-login'].includes(normalizedPath);
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      {/* Global Sticky Header */}
+      {!hideNavbarAndFooter && <Navbar />}
+      
+      {/* Main Content Area */}
+      <main className="flex-grow bg-beige-light/30">
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-conditions" element={<TermsConditions />} />
+          <Route path="/shipping-policy" element={<ShippingPolicy />} />
+          <Route path="/return-policy" element={<ReturnPolicy />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/admin-login" element={<AdminLogin />} />
+
+          {/* User Protected Routes */}
+          <Route
+            path="/cart"
+            element={
+              <ProtectedRoute>
+                <Cart />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/wishlist"
+            element={
+              <ProtectedRoute>
+                <Wishlist />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <Checkout />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute>
+                <Orders />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Admin Protected Routes */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            }
+          />
+
+          {/* Catch-all Fallback */}
+          <Route path="*" element={<Home />} />
+        </Routes>
+      </main>
+
+      {/* Global Footer */}
+      {!hideNavbarAndFooter && <Footer />}
+    </div>
+  );
+}
+
 function App() {
   return (
     <Router>
@@ -46,89 +140,7 @@ function App() {
         <ProductProvider>
           <CartProvider>
             <WishlistProvider>
-              <div className="flex flex-col min-h-screen">
-                {/* Global Sticky Header */}
-                <Navbar />
-                
-                {/* Main Content Area */}
-                <main className="flex-grow bg-beige-light/30">
-                  <Routes>
-                    {/* Public Routes */}
-                    <Route path="/" element={<Home />} />
-                    <Route path="/shop" element={<Shop />} />
-                    <Route path="/product/:id" element={<ProductDetails />} />
-                    <Route path="/about-us" element={<AboutUs />} />
-                    <Route path="/contact-us" element={<ContactUs />} />
-                    <Route path="/faq" element={<FAQ />} />
-                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                    <Route path="/terms-conditions" element={<TermsConditions />} />
-                    <Route path="/shipping-policy" element={<ShippingPolicy />} />
-                    <Route path="/return-policy" element={<ReturnPolicy />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/forgot-password" element={<ForgotPassword />} />
-                    <Route path="/admin-login" element={<AdminLogin />} />
-
-                    {/* User Protected Routes */}
-                    <Route
-                      path="/cart"
-                      element={
-                        <ProtectedRoute>
-                          <Cart />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/wishlist"
-                      element={
-                        <ProtectedRoute>
-                          <Wishlist />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/checkout"
-                      element={
-                        <ProtectedRoute>
-                          <Checkout />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/orders"
-                      element={
-                        <ProtectedRoute>
-                          <Orders />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/profile"
-                      element={
-                        <ProtectedRoute>
-                          <Profile />
-                        </ProtectedRoute>
-                      }
-                    />
-
-                    {/* Admin Protected Routes */}
-                    <Route
-                      path="/admin/dashboard"
-                      element={
-                        <AdminRoute>
-                          <AdminDashboard />
-                        </AdminRoute>
-                      }
-                    />
-
-                    {/* Catch-all Fallback */}
-                    <Route path="*" element={<Home />} />
-                  </Routes>
-                </main>
-
-                {/* Global Footer */}
-                <Footer />
-              </div>
+              <AppContent />
             </WishlistProvider>
           </CartProvider>
         </ProductProvider>

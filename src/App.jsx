@@ -46,6 +46,11 @@ function AppContent() {
   const normalizedPath = location.pathname.replace(/\/$/, '');
   const hideNavbarAndFooter = ['/login', '/register', '/forgot-password', '/admin-login'].includes(normalizedPath);
 
+  // Auto-scroll to top on page/route/search parameter change (e.g. Shop, Men, Women, Kids filters or pagination)
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [location.pathname, location.search]);
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Global Sticky Header */}
